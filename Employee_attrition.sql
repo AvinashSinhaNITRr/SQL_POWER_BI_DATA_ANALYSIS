@@ -104,7 +104,7 @@ and Attrition = 'Yes';
 -- xi. The details of employees having maximum and minimum salary working in different department who receives less than 13% salary hike
 
 select department,
-	max(MonthlyIncome),
+    max(MonthlyIncome),
     min(MonthlyIncome),
     sum(attrition = 'Yes')as attrition,
     sum(attrition = 'No') as Retention
