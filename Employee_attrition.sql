@@ -36,21 +36,15 @@ SELECT
     (SELECT COUNT(*) FROM employee_attrition WHERE Attrition = 'No') AS Total_Non_Attrited_Employees;
 
 
--- iii. Department wise Total Attrition -- 
 
-SELECT DISTINCT Department, COUNT(CASE WHEN Attrition = 'Yes' THEN 1 END) AS Total_Attrited_Employees
-FROM employee_attrition
-GROUP BY Department
-ORDER BY Total_Attrited_Employees desc;
-
--- iv. No. of Employee by Gender--
+-- iii. No. of Employee by Gender--
 
 SELECT Gender, COUNT(EmployeeID) AS No_of_Employees, COUNT(CASE WHEN Attrition = 'Yes' THEN 1 END) AS Total_Attrited_Employees, COUNT(CASE WHEN Attrition = 'No' THEN 1 END) AS Total_Retention_Employees
 FROM employee_attrition
 GROUP BY Gender;
 
 
--- v. No. of Employees by Department And Attrition --
+-- iv. No. of Employees by Department And Attrition --
 
 SELECT Department, COUNT(EmployeeID) AS No_of_Employees, COUNT(CASE WHEN Attrition = 'Yes' THEN 1 END) AS Total_Attrited_Employees, COUNT(CASE WHEN Attrition = 'No' THEN 1 END) AS Total_Retention_Employees
 FROM employee_attrition
@@ -59,7 +53,7 @@ ORDER BY Department;
 
 
 
--- vi. Top four Job roles getting attrition --
+-- v. Top four Job roles getting attrition --
 
 SELECT JobRole, COUNT(EmployeeID) AS No_of_Employees, COUNT(CASE WHEN Attrition = 'Yes' THEN 1 END) AS Attrition_Count
 FROM employee_attrition
@@ -67,7 +61,7 @@ GROUP BY JobRole
 ORDER BY Attrition_Count DESC
 LIMIT 4;
 
--- vii. No. Of Employees by Distance From Home(in km) and Attrition --
+-- vi. No. Of Employees by Distance From Home(in km) and Attrition --
 
 SELECT DistanceFromHome AS Distance_from_home_in_km, COUNT(EmployeeID) AS No_of_Employees, COUNT(CASE WHEN Attrition = 'Yes' THEN 1 END) AS Total_Attrited_Employees, COUNT(CASE WHEN Attrition = 'No' THEN 1 END) AS Total_Retention_Employees
 FROM employee_attrition
@@ -75,19 +69,19 @@ GROUP BY DistanceFromHome
 ORDER BY DistanceFromHome ASC;
 
 
--- viii. Average Years at Company before attrition Of Employee --
+-- vii. Average Years at Company before attrition Of Employee --
 
 SELECT AVG(YearsAtCompany) AS Average_Years_at_Company, MAX(YearsAtCompany) AS Maximum_Years_at_Company, MIN(YearsAtCompany) AS Minimum_Years_at_Company
 FROM employee_attrition
 WHERE Attrition = 'Yes';
 
--- ix. No. Of Employees by Marital Status who have taken Attrition --
+-- viii. No. Of Employees by Marital Status who have taken Attrition --
 
 SELECT MaritalStatus, COUNT(EmployeeID) AS No_of_Employees, COUNT(CASE WHEN Attrition = 'Yes' THEN 1 END) AS Total_Attrited_Employees, COUNT(CASE WHEN Attrition = 'No' THEN 1 END) AS Total_Retention_Employees
 FROM employee_attrition
 GROUP BY MaritalStatus;
 
--- x. Find the details of employees under attrition having 5+ years of experience in between the age group of 27-35.
+-- ix. Find the details of employees under attrition having 5+ years of experience in between the age group of 27-35.
 
 select * 
 from employee_attrition
@@ -101,27 +95,27 @@ where age between 27 and 35
 and TotalWorkingYears > 5
 and Attrition = 'Yes';
 
--- xi. The details of employees having maximum and minimum salary working in different department who receives less than 13% salary hike
+-- x. The details of employees having maximum and minimum salary working in different department who receives less than 13% salary hike
 
 select department,
-    max(MonthlyIncome),
+	max(MonthlyIncome),
     min(MonthlyIncome),
     sum(attrition = 'Yes')as attrition,
     sum(attrition = 'No') as Retention
 from employee_attrition
 where percentsalaryhike < 13
 group by department
-order by max(MonthlyIncome) dec;
+order by max(MonthlyIncome) desc;
 
--- xii. The total number of male and female under attrition whose marital status is married and haven't received promotion in the last 2 years
+-- xi. The total number of male and female under attrition whose marital status is married and haven't received promotion in the last 2 years
 
-SELECT gender , count(EmployeeID), sum(attrition = 'Yes')as attrition
+SELECT gender , count(EmployeeID) as Married_Employee, sum(attrition = 'Yes')as attrition
 from employee_attrition
 where MaritalStatus = 'Married'
 and YearsSinceLastPromotion = 2
 group by gender;
 
--- xiii. Employees with max performance rating but no promotion for 4 years above
+-- xii. Employees with max performance rating but no promotion for 4 years above
 
 select max(PerformanceRating) from employee_attrition
 
@@ -136,7 +130,7 @@ from employee_attrition
 where PerformanceRating = (select max(PerformanceRating) from employee_attrition)
 and YearsSinceLastPromotion >= 4;
 
--- xiv. Who has mac and min percentage of salary hike
+-- xiii. Who has mac and min percentage of salary hike
 
 select YearsAtCompany, PerformanceRating, YearsSinceLastPromotion,
 	max(PercentSalaryHike),
@@ -145,7 +139,7 @@ from employee_attrition
 group by YearsAtCompany, PerformanceRating, YearsSinceLastPromotion
 order by max(PercentSalaryHike) desc, min(PercentSalaryHike) asc;
 
--- xv. Employees working overtime but given min salary hike and are working from more than 5 years with company
+-- xiv. Employees working overtime but given min salary hike and are working from more than 5 years with company
 
 select *
 from employee_attrition
